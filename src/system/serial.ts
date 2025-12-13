@@ -1,7 +1,3 @@
-function handleSerialData(data: string) {
-  console.log(data)
-}
-
 function handleSerialError(error: string) {
   console.error("Renderer received serial error:", error);
 }
@@ -16,7 +12,7 @@ export async function sendSerialObj(obj: object) {
   await window.serialAPI.sendData(data);
 }
 
-export function initSerial() {
+export function initSerial(handleSerialData: (data: string) => void) {
   window.serialAPI.onSerialData(handleSerialData);
   window.serialAPI.onSerialError(handleSerialError);
 

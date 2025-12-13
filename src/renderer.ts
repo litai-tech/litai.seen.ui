@@ -1,5 +1,5 @@
 import "./index.css";
-import { initSerial, sendSerialObj } from "./system/serial";
+import { initSerial } from "./system/serial";
 
 async function updateSystemInfo() {
   const info = await window.systemAPI.getSystemStats();
@@ -14,6 +14,11 @@ async function updateSystemInfo() {
   console.log(`CPU Temp: ${info.cpuTemp}°C`);
 }
 
-initSerial();
+function dataReceived(data: string) {
+  const jsonObj = JSON.parse(data);
+  console.log(data);
+}
+
+initSerial(dataReceived);
 
 window.updateSystemInfo = updateSystemInfo;
