@@ -1,0 +1,42 @@
+import { app, BrowserWindow } from "electron";
+import { serialWorkerManager } from "../workers/serial-worker-manager";
+import { createMainWindow } from "../windows/window-manager";
+
+/**
+ * Registers application lifecycle event handlers
+ */
+export function registerLifecycleHandlers(): void {
+  app.on("ready", handleAppReady);
+  app.on("window-all-closed", handleAllWindowsClosed);
+  app.on("activate", handleActivate);
+}
+
+/**
+ * Handler for when the app is ready
+ */
+function handleAppReady(): void {
+  createMainWindow();
+}
+
+/**
+ * Handler for when all windows are closed
+ */
+function handleAllWindowsClosed(): void {
+  // Disconnect serial worker before quitting
+  serialWorkerManager.disconnect();
+
+  // On macOS, apps typically stay active until user quits with Cmd+Q
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+}
+
+/**
+ * Handler for macOS activate event
+ */
+function handleActivate(): void {
+  // On macOS, re-create window when dock icon is clicked and no windows open
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createMainWindow();
+  }
+}
