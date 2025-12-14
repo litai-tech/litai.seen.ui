@@ -1,21 +1,26 @@
 import "./index.css";
 import { initSerial } from "./system/serial";
+import { SystemStats, SystemStatsError } from "./types";
 
-async function updateSystemInfo() {
+async function updateSystemInfo(): Promise<void> {
   const info = await window.systemAPI.getSystemStats();
-  if (info.error) {
-    console.error(info.error);
+
+  if ("error" in info) {
+    const errorInfo = info as SystemStatsError;
+    console.error(errorInfo.error);
     return;
   }
-  console.log(`CPU Load: ${info.cpuLoad}%`);
+
+  const statsInfo = info as SystemStats;
+  console.log(`CPU Load: ${statsInfo.cpuLoad}%`);
   console.log(
-    `RAM Used: ${((info.usedRAM / info.totalRAM) * 100).toFixed(2)}%`
+    `RAM Used: ${((statsInfo.usedRAM / statsInfo.totalRAM) * 100).toFixed(2)}%`
   );
-  console.log(`CPU Temp: ${info.cpuTemp}°C`);
+  console.log(`CPU Temp: ${statsInfo.cpuTemp}°C`);
 }
 
-function dataReceived(data: string) {
-  const jsonObj = JSON.parse(data);
+function dataReceived(data: string): void {
+  const jsonObj: unknown = JSON.parse(data);
   console.log(data);
 }
 
