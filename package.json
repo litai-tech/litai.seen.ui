@@ -5,7 +5,8 @@
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "cross-env APP_ENV=target electron-forge start",
+    "start:local": "cross-env APP_ENV=local electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -33,6 +34,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.22",
+    "cross-env": "^7.0.3",
     "daisyui": "^5.5.5",
     "electron": "39.2.2",
     "eslint": "^8.57.1",

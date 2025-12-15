@@ -1,0 +1,11 @@
+{
+  "environment": "target",
+  "serial": {
+    "useMock": false,
+    "mockInputFile": "",
+    "mockInterval": 0,
+    "workerPath": "/home/rock/ui/serial-worker/index.js",
+    "portPath": "/dev/ttyS3",
+    "baudRate": 500000
+  }
+}

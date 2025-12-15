@@ -1,6 +1,8 @@
 import { app, BrowserWindow } from "electron";
 import { serialWorkerManager } from "../workers/serial-worker-manager";
+import { mockSerialWorkerManager } from "../workers/mock-serial-worker-manager";
 import { createMainWindow } from "../windows/window-manager";
+import { loadConfig } from "../utils/config-loader";
 
 /**
  * Registers application lifecycle event handlers
@@ -23,7 +25,12 @@ function handleAppReady(): void {
  */
 function handleAllWindowsClosed(): void {
   // Disconnect serial worker before quitting
-  serialWorkerManager.disconnect();
+  const config = loadConfig();
+  if (config.serial.useMock) {
+    mockSerialWorkerManager.disconnect();
+  } else {
+    serialWorkerManager.disconnect();
+  }
 
   // On macOS, apps typically stay active until user quits with Cmd+Q
   if (process.platform !== "darwin") {

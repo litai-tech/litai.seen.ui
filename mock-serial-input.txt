@@ -1,0 +1,10 @@
+{"sensor": "temperature", "value": 23.5, "unit": "C"}
+{"sensor": "humidity", "value": 45.2, "unit": "%"}
+{"sensor": "pressure", "value": 1013.25, "unit": "hPa"}
+{"sensor": "temperature", "value": 23.7, "unit": "C"}
+{"sensor": "humidity", "value": 45.8, "unit": "%"}
+{"sensor": "pressure", "value": 1013.30, "unit": "hPa"}
+{"sensor": "temperature", "value": 24.0, "unit": "C"}
+{"sensor": "humidity", "value": 46.1, "unit": "%"}
+{"sensor": "pressure", "value": 1013.28, "unit": "hPa"}
+{"sensor": "temperature", "value": 24.2, "unit": "C"}

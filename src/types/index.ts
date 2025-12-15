@@ -16,3 +16,5 @@ export { DEFAULT_SETTINGS } from "./settings";
 export type { WorkerInputMessage, WorkerOutputMessage } from "./worker";
 
 export type { SerialDataHandler, SerialErrorHandler } from "./serial";
+
+export type { AppConfig, SerialConfig } from "./config";

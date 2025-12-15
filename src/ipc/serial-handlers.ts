@@ -1,6 +1,8 @@
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 import { serialWorkerManager } from "../workers/serial-worker-manager";
+import { mockSerialWorkerManager } from "../workers/mock-serial-worker-manager";
 import { ensureNewline } from "../utils/string-utils";
+import { loadConfig } from "../utils/config-loader";
 
 /**
  * Registers IPC handlers for serial communication
@@ -18,5 +20,11 @@ function handleSendSerialData(
 ): void {
   const formattedData = ensureNewline(data, true);
   console.log("Sending serial data:", formattedData);
-  serialWorkerManager.sendData(formattedData);
+
+  const config = loadConfig();
+  if (config.serial.useMock) {
+    mockSerialWorkerManager.sendData(formattedData);
+  } else {
+    serialWorkerManager.sendData(formattedData);
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "environment": "local",
+  "serial": {
+    "useMock": true,
+    "mockInputFile": "mock-serial-input.txt",
+    "mockInterval": 1000,
+    "workerPath": "",
+    "portPath": "",
+    "baudRate": 9600
+  }
+}
