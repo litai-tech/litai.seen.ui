@@ -26,6 +26,7 @@ const serialAPI: SerialAPI = {
 const appAPI: AppAPI = {
   getAvailableApps: () => ipcRenderer.invoke("app:getAvailableApps"),
   loadApp: (appName: string, openDevTools: boolean) => ipcRenderer.invoke("app:loadApp", appName, openDevTools),
+  goToAppSelector: () => ipcRenderer.invoke("app:goToAppSelector"),
 };
 
 const configAPI: ConfigAPI = {

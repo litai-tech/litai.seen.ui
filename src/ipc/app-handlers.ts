@@ -99,6 +99,26 @@ export function loadApp(appName: string, openDevTools: boolean): void {
 }
 
 /**
+ * Returns to the app selector screen
+ */
+export function goToAppSelector(): void {
+  const mainWindow = BrowserWindow.getAllWindows()[0];
+  if (!mainWindow) {
+    console.error("No main window found");
+    return;
+  }
+
+  // Load the app selector
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+  } else {
+    mainWindow.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    );
+  }
+}
+
+/**
  * Registers IPC handlers for app-related operations
  */
 export function registerAppHandlers(): void {
@@ -108,5 +128,9 @@ export function registerAppHandlers(): void {
 
   ipcMain.handle("app:loadApp", async (_event, appName: string, openDevTools: boolean) => {
     loadApp(appName, openDevTools);
+  });
+
+  ipcMain.handle("app:goToAppSelector", async () => {
+    goToAppSelector();
   });
 }

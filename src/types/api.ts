@@ -54,6 +54,7 @@ export interface AppInfo {
 export interface AppAPI {
   getAvailableApps: () => Promise<AppInfo[]>;
   loadApp: (appName: string, openDevTools: boolean) => Promise<void>;
+  goToAppSelector: () => Promise<void>;
 }
 
 /**
