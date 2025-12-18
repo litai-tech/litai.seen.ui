@@ -7,5 +7,6 @@
     "workerPath": "/home/rock/ui/serial-worker/index.js",
     "portPath": "/dev/ttyS3",
     "baudRate": 500000
-  }
+  },
+  "useOnScreenKeyboard": true
 }

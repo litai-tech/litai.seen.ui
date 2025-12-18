@@ -11,9 +11,44 @@
         <div class="card-body">
           <h2 class="card-title">WiFi Connection Manager</h2>
           <p>This is a placeholder for the WiFi connector app.</p>
+
+          <div class="keyboard-input-example mt-6">
+            <h3 class="text-xl font-semibold mb-3">Example: WiFi Setup with Onscreen Keyboard</h3>
+            <div class="form-control mb-4">
+              <label class="label">
+                <span class="label-text">Network Name (SSID)</span>
+              </label>
+              <input
+                type="text"
+                id="ssid-input"
+                placeholder="Enter network name"
+                class="input input-bordered w-full"
+              />
+            </div>
+
+            <div class="form-control mb-4">
+              <label class="label">
+                <span class="label-text">Password</span>
+              </label>
+              <input
+                type="password"
+                id="password-input"
+                placeholder="Enter password"
+                class="input input-bordered w-full"
+              />
+            </div>
+
+            <button class="btn btn-primary">Connect to WiFi</button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Onscreen Keyboard Container -->
+    <div id="keyboard-container" class="keyboard-container">
+      <div id="simple-keyboard" class="simple-keyboard"></div>
+    </div>
+
     <script type="module" src="./renderer.ts"></script>
   </body>
 </html>

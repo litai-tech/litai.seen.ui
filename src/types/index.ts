@@ -10,6 +10,7 @@ export type {
   SerialAPI,
   AppAPI,
   AppInfo,
+  ConfigAPI,
 } from "./api";
 
 export type { AppSettings, SettingsKey } from "./settings";

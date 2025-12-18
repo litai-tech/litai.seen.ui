@@ -55,3 +55,10 @@ export interface AppAPI {
   getAvailableApps: () => Promise<AppInfo[]>;
   loadApp: (appName: string, openDevTools: boolean) => Promise<void>;
 }
+
+/**
+ * Config API exposed to renderer process
+ */
+export interface ConfigAPI {
+  getConfig: () => Promise<any>;
+}

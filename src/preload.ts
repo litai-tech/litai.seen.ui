@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
-import { SystemAPI, SettingsAPI, SerialAPI, AppAPI } from "./types";
+import { SystemAPI, SettingsAPI, SerialAPI, AppAPI, ConfigAPI } from "./types";
 
 const systemAPI: SystemAPI = {
   getSystemStats: () => ipcRenderer.invoke("system:getStats"),
@@ -28,7 +28,12 @@ const appAPI: AppAPI = {
   loadApp: (appName: string, openDevTools: boolean) => ipcRenderer.invoke("app:loadApp", appName, openDevTools),
 };
 
+const configAPI: ConfigAPI = {
+  getConfig: () => ipcRenderer.invoke("config:getConfig"),
+};
+
 contextBridge.exposeInMainWorld("systemAPI", systemAPI);
 contextBridge.exposeInMainWorld("settingsAPI", settingsAPI);
 contextBridge.exposeInMainWorld("serialAPI", serialAPI);
 contextBridge.exposeInMainWorld("appAPI", appAPI);
+contextBridge.exposeInMainWorld("configAPI", configAPI);

@@ -14,4 +14,5 @@ export interface SerialConfig {
 export interface AppConfig {
   environment: "local" | "target";
   serial: SerialConfig;
+  useOnScreenKeyboard: boolean;
 }

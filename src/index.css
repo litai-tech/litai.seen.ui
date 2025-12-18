@@ -34,3 +34,77 @@ body {
   z-index: 10;
   pointer-events: none;
 }
+
+/* Onscreen Keyboard Styles */
+.keyboard-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-base-200);
+  border-top: 2px solid var(--color-base-300);
+  padding: 1rem;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.keyboard-container.active {
+  display: block;
+}
+
+.simple-keyboard {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Override simple-keyboard theme background */
+.simple-keyboard.hg-theme-default {
+  background-color: var(--color-base-100) !important;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+/* Override simple-keyboard default styles with DaisyUI colors */
+.simple-keyboard .hg-button {
+  background: var(--color-base-300) !important;
+  color: var(--color-base-content) !important;
+  border: 1px solid var(--color-base-300) !important;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+}
+
+.simple-keyboard .hg-button:active,
+.simple-keyboard .hg-button.hg-activeButton {
+  background: var(--color-primary) !important;
+  color: var(--color-primary-content) !important;
+  transform: translateY(1px);
+}
+
+.simple-keyboard .hg-button:hover {
+  background: var(--color-base-200) !important;
+}
+
+/* Special keys styling */
+.simple-keyboard .hg-button.hg-functionBtn {
+  background: var(--color-neutral) !important;
+  color: var(--color-neutral-content) !important;
+}
+
+.simple-keyboard .hg-button.hg-functionBtn:hover {
+  background: var(--color-neutral-focus) !important;
+}
+
+.simple-keyboard .hg-button.hg-functionBtn:active {
+  background: var(--color-primary) !important;
+  color: var(--color-primary-content) !important;
+}
+
+.simple-keyboard .hg-row {
+  margin-bottom: 0.5rem;
+}
+
+.simple-keyboard .hg-row:last-child {
+  margin-bottom: 0;
+}

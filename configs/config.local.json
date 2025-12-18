@@ -7,5 +7,6 @@
     "workerPath": "",
     "portPath": "",
     "baudRate": 9600
-  }
+  },
+  "useOnScreenKeyboard": true
 }
