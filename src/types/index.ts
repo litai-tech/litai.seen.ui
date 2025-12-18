@@ -8,6 +8,8 @@ export type {
   SystemAPI,
   SettingsAPI,
   SerialAPI,
+  AppAPI,
+  AppInfo,
 } from "./api";
 
 export type { AppSettings, SettingsKey } from "./settings";

@@ -4,6 +4,7 @@ import { serialWorkerManager } from "../workers/serial-worker-manager";
 import { mockSerialWorkerManager } from "../workers/mock-serial-worker-manager";
 import { settingsStore } from "../ipc/settings-handlers";
 import { loadConfig } from "../utils/config-loader";
+import { getAvailableApps } from "../ipc/app-handlers";
 
 /**
  * Configuration for the main window
@@ -28,15 +29,26 @@ export function createMainWindow(): BrowserWindow {
     },
   });
 
-  loadWindowContent(mainWindow);
-  setupDevTools(mainWindow);
-  initializeSerialWorker(mainWindow);
+  // Check if we should auto-start an app
+  const apps = getAvailableApps();
+  if (apps.length === 1) {
+    // Auto-start the only available app
+    console.log(`Auto-starting app: ${apps[0].name}`);
+    loadAppDirectly(mainWindow, apps[0].name);
+    setupDevTools(mainWindow);
+    initializeSerialWorker(mainWindow);
+  } else {
+    // Show app selector
+    loadWindowContent(mainWindow);
+    setupDevTools(mainWindow);
+    // Don't initialize serial worker yet - wait for app selection
+  }
 
   return mainWindow;
 }
 
 /**
- * Loads the appropriate content into the window
+ * Loads the app selector into the window
  */
 function loadWindowContent(window: BrowserWindow): void {
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -45,6 +57,33 @@ function loadWindowContent(window: BrowserWindow): void {
     window.loadFile(
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
     );
+  }
+}
+
+/**
+ * Loads an app directly (for auto-start)
+ */
+function loadAppDirectly(window: BrowserWindow, appName: string): void {
+  // Use getAppsDir from app-handlers to ensure consistent path resolution
+  const appsDir = process.env.NODE_ENV === 'production'
+    ? path.join(process.resourcesPath, 'apps')
+    : path.join(__dirname, '../../apps');
+
+  const appPath = path.join(appsDir, appName);
+  const indexPath = path.join(appPath, "index.html");
+
+  // Load the app
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    // In dev mode, construct URL to app through Vite dev server
+    const appUrl = `${MAIN_WINDOW_VITE_DEV_SERVER_URL}/../apps/${appName}/index.html`;
+    console.log(`Auto-starting app in dev mode: ${appUrl}`);
+    window.loadURL(appUrl).catch(err => {
+      console.error(`Failed to load app URL: ${err}`);
+      // Fallback to file loading
+      window.loadFile(indexPath);
+    });
+  } else {
+    window.loadFile(indexPath);
   }
 }
 

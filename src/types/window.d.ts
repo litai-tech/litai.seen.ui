@@ -1,4 +1,4 @@
-import { SystemAPI, SettingsAPI, SerialAPI } from "./api";
+import { SystemAPI, SettingsAPI, SerialAPI, AppAPI } from "./api";
 
 /**
  * Global window interface extensions
@@ -9,6 +9,7 @@ declare global {
     systemAPI: SystemAPI;
     settingsAPI: SettingsAPI;
     serialAPI: SerialAPI;
+    appAPI: AppAPI;
 
     // Utility functions exposed to window object
     updateSystemInfo: () => Promise<void>;

@@ -39,3 +39,19 @@ export interface SerialAPI {
   onSerialData: (callback: (data: string) => void) => void;
   onSerialError: (callback: (error: string) => void) => void;
 }
+
+/**
+ * App information
+ */
+export interface AppInfo {
+  name: string;
+  path: string;
+}
+
+/**
+ * App API exposed to renderer process
+ */
+export interface AppAPI {
+  getAvailableApps: () => Promise<AppInfo[]>;
+  loadApp: (appName: string, openDevTools: boolean) => Promise<void>;
+}

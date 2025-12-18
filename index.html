@@ -2,9 +2,29 @@
 <html data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
+    <title>App Selector</title>
   </head>
-  <body>
+  <body class="min-h-screen base-300">
+    <div class="container mx-auto py-12">
+      <div class="text-center mb-12">
+        <p class="text-lg text-base-content/70">Choose an application to launch</p>
+      </div>
+
+      <div id="app-list" class="grid grid-cols-[repeat(auto-fit,minmax(200px,250px))] gap-6 mx-auto">
+        <!-- Apps will be loaded here dynamically -->
+      </div>
+
+      <div id="loading" class="text-center py-12">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <p class="mt-4 text-base-content/70">Loading applications...</p>
+      </div>
+
+      <div id="no-apps" class="text-center py-12 hidden">
+        <div class="text-6xl mb-4">📱</div>
+        <h2 class="text-2xl font-bold mb-2">No Applications Found</h2>
+        <p class="text-base-content/70">Please add applications to the "apps" directory</p>
+      </div>
+    </div>
     <script type="module" src="/src/renderer.ts"></script>
   </body>
 </html>
