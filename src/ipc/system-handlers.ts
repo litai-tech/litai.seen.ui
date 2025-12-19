@@ -7,6 +7,7 @@ import { SystemStats, SystemStatsError } from "../types";
  */
 export function registerSystemHandlers(): void {
   ipcMain.handle("system:getStats", handleGetSystemStats);
+  ipcMain.handle("system:getLocalIp", handleGetLocalIp);
 }
 
 /**
@@ -27,5 +28,27 @@ async function handleGetSystemStats(): Promise<SystemStats | SystemStatsError> {
   } catch (e) {
     console.error("Error fetching system info:", e);
     return { error: "Failed to fetch system information" };
+  }
+}
+
+/**
+ * Handler for getting local IP address
+ * Returns the first non-internal IPv4 address found
+ */
+async function handleGetLocalIp(): Promise<string | null> {
+  try {
+    const networkInterfaces = await si.networkInterfaces();
+
+    // Find the first non-internal IPv4 address
+    for (const iface of networkInterfaces) {
+      if (!iface.internal && iface.ip4 && iface.ip4 !== '127.0.0.1') {
+        return iface.ip4;
+      }
+    }
+
+    return null;
+  } catch (e) {
+    console.error("Error fetching local IP:", e);
+    return null;
   }
 }

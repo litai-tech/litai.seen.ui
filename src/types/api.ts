@@ -20,6 +20,7 @@ export interface SystemStatsError {
  */
 export interface SystemAPI {
   getSystemStats: () => Promise<SystemStats | SystemStatsError>;
+  getLocalIp: () => Promise<string | null>;
 }
 
 /**

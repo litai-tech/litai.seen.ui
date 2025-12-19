@@ -3,6 +3,7 @@ import { SystemAPI, SettingsAPI, SerialAPI, AppAPI, ConfigAPI } from "./types";
 
 const systemAPI: SystemAPI = {
   getSystemStats: () => ipcRenderer.invoke("system:getStats"),
+  getLocalIp: () => ipcRenderer.invoke("system:getLocalIp"),
 };
 
 const settingsAPI: SettingsAPI = {

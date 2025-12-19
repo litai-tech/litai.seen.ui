@@ -111,3 +111,8 @@ async function loadApps(): Promise<void> {
 
 // Load apps when the page loads
 loadApps();
+
+const localIp = await window.systemAPI.getLocalIp();
+const localIpElement = document.getElementById("localIpSpan");
+if(localIpElement)
+  localIpElement.innerText = localIp ?? "";
