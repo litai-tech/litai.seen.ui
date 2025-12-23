@@ -1,5 +1,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
-import { SystemAPI, SettingsAPI, SerialAPI, AppAPI, ConfigAPI } from "./types";
+import { SystemAPI, SettingsAPI, SerialAPI, AppAPI, ConfigAPI } from "../types";
+
+console.log("[Preload] Preload script is executing");
 
 const systemAPI: SystemAPI = {
   getSystemStats: () => ipcRenderer.invoke("system:getStats"),
@@ -25,17 +27,28 @@ const serialAPI: SerialAPI = {
 };
 
 const appAPI: AppAPI = {
-  getAvailableApps: () => ipcRenderer.invoke("app:getAvailableApps"),
-  loadApp: (appName: string, openDevTools: boolean) => ipcRenderer.invoke("app:loadApp", appName, openDevTools),
-  goToAppSelector: () => ipcRenderer.invoke("app:goToAppSelector"),
+  getAvailableApps: () => {
+    console.log("[Preload] appAPI.getAvailableApps called");
+    return ipcRenderer.invoke("app:getAvailableApps");
+  },
+  loadApp: (appName: string, openDevTools: boolean) => {
+    console.log(`[Preload] appAPI.loadApp called with ${appName}, ${openDevTools}`);
+    return ipcRenderer.invoke("app:loadApp", appName, openDevTools);
+  },
+  goToAppSelector: () => {
+    console.log("[Preload] appAPI.goToAppSelector called");
+    return ipcRenderer.invoke("app:goToAppSelector");
+  },
 };
 
 const configAPI: ConfigAPI = {
   getConfig: () => ipcRenderer.invoke("config:getConfig"),
 };
 
+console.log("[Preload] Exposing APIs to main world");
 contextBridge.exposeInMainWorld("systemAPI", systemAPI);
 contextBridge.exposeInMainWorld("settingsAPI", settingsAPI);
 contextBridge.exposeInMainWorld("serialAPI", serialAPI);
 contextBridge.exposeInMainWorld("appAPI", appAPI);
 contextBridge.exposeInMainWorld("configAPI", configAPI);
+console.log("[Preload] APIs exposed successfully");

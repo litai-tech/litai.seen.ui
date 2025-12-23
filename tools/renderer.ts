@@ -1,5 +1,5 @@
 import "./index.css";
-import { AppInfo } from "./types";
+import { AppInfo } from "../types";
 
 /**
  * Formats app name for display (converts underscores and handles spaces)
@@ -51,9 +51,20 @@ function createAppCard(app: AppInfo): HTMLElement {
   const launchButton = document.createElement("button");
   launchButton.className = "btn btn-primary btn-block";
   launchButton.textContent = "Launch";
-  launchButton.onclick = () => {
+  launchButton.onclick = async (event) => {
+    event.preventDefault();
     const openDevTools = checkbox.checked;
-    window.appAPI.loadApp(app.name, openDevTools);
+    console.log(`[Renderer] Button clicked for app: ${app.name}, openDevTools: ${openDevTools}`);
+    console.log(`[Renderer] window.appAPI exists:`, !!window.appAPI);
+    console.log(`[Renderer] window.appAPI.loadApp exists:`, !!window.appAPI?.loadApp);
+
+    try {
+      console.log(`[Renderer] Calling window.appAPI.loadApp...`);
+      const result = await window.appAPI.loadApp(app.name, openDevTools);
+      console.log(`[Renderer] App load request completed, result:`, result);
+    } catch (error) {
+      console.error(`[Renderer] Error loading app:`, error);
+    }
   };
 
   actions.appendChild(launchButton);

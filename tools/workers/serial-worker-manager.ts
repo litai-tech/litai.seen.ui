@@ -1,6 +1,6 @@
 import { fork, ChildProcess } from "child_process";
 import { BrowserWindow } from "electron";
-import { WorkerInputMessage, WorkerOutputMessage } from "../types";
+import { WorkerInputMessage, WorkerOutputMessage } from "../../types";
 
 /**
  * Manages the serial worker process

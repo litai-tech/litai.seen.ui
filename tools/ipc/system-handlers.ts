@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
 import si from "systeminformation";
-import { SystemStats, SystemStatsError } from "../types";
+import { SystemStats, SystemStatsError } from "../../types";
 
 /**
  * Registers IPC handlers for system information

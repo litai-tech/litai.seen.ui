@@ -1,6 +1,6 @@
 # Litai.Seen - Electron Application
 
-A modern, type-safe Electron application with modular architecture for serial communication and system monitoring.
+A modern, type-safe Electron application with modular multi-app architecture for serial communication and system monitoring.
 
 ## 🚀 Quick Start
 
@@ -8,8 +8,11 @@ A modern, type-safe Electron application with modular architecture for serial co
 # Install dependencies
 npm install
 
-# Start development
+# Start development (target environment - points to device serial port)
 npm start
+
+# Start local development (local environment - uses mock serial data)
+npm run start:local
 
 # Build application
 npm run package
@@ -18,75 +21,121 @@ npm run package
 npm run make
 ```
 
+### Starting the Local Electron App
+
+To run the app locally with mock serial data:
+
+```bash
+npm run start:local
+```
+
+This will:
+- Launch the app with `APP_ENV=local` environment variable
+- Use mock serial data from [mock-serial-input.txt](mock-serial-input.txt)
+- Display the app selector if multiple apps exist, or auto-launch a single app
+- Enable development tools for debugging
+
 ## 📁 Project Structure
 
 ```
-src/
-├── main.ts                    # Entry point (19 lines)
-├── preload.ts                 # Context bridge
-├── renderer.ts                # Renderer entry
+litai.seen.ui/
+├── apps/                          # Individual applications
+│   ├── README.md                  # Apps documentation
+│   ├── wifi_connector/            # WiFi configuration app
+│   │   ├── index.html
+│   │   └── renderer.ts
+│   └── servo_rotator/             # Servo control app
+│       ├── index.html
+│       └── renderer.ts
 │
-├── app/                       # Application lifecycle
-│   ├── index.ts
-│   └── lifecycle.ts
+├── app_selector/                  # App selection screen
+│   ├── index.ts                   # App selector logic
+│   └── lifecycle.ts               # App launcher
 │
-├── ipc/                       # IPC handlers
-│   ├── index.ts
-│   ├── system-handlers.ts
-│   ├── settings-handlers.ts
-│   └── serial-handlers.ts
+├── tools/                         # Shared tools & utilities
+│   ├── index.css                  # Global styles (Tailwind)
+│   ├── main.ts                    # Main process entry
+│   ├── preload.ts                 # Preload script (context bridge)
+│   ├── renderer.ts                # App selector renderer
+│   ├── ipc/                       # IPC handlers
+│   │   ├── app-handlers.ts
+│   │   ├── config-handlers.ts
+│   │   ├── serial-handlers.ts
+│   │   ├── settings-handlers.ts
+│   │   └── system-handlers.ts
+│   ├── serial-worker/             # Serial port worker
+│   ├── system/                    # System integration
+│   ├── utils/                     # Shared utilities
+│   │   ├── keyboard.ts            # On-screen keyboard
+│   │   └── string-utils.ts
+│   ├── windows/                   # Window management
+│   └── workers/                   # Worker managers
 │
-├── windows/                   # Window management
-│   ├── index.ts
-│   └── window-manager.ts
+├── types/                         # TypeScript type definitions
+│   ├── api.ts                     # API types
+│   ├── config.ts                  # Config types
+│   ├── serial.ts                  # Serial types
+│   ├── settings.ts                # Settings types
+│   └── window.d.ts                # Window types
 │
-├── workers/                   # Worker processes
-│   ├── index.ts
-│   └── serial-worker-manager.ts
+├── electron_configs/              # Electron configuration files
+│   ├── forge.config.ts            # Electron Forge config
+│   ├── tsconfig.json              # TypeScript config
+│   └── vite.*.config.mts          # Vite configs
 │
-├── utils/                     # Utilities
-│   ├── index.ts
-│   └── string-utils.ts
+├── configs/                       # App-specific configurations
+│   ├── local.json                 # Local environment config
+│   └── target.json                # Target environment config
 │
-├── types/                     # TypeScript types
-│   ├── index.ts
-│   ├── api.ts
-│   ├── settings.ts
-│   ├── worker.ts
-│   ├── serial.ts
-│   └── window.d.ts
-│
-└── system/                    # System integration
-    └── serial.ts
+├── index.html                     # App selector HTML
+├── forge.config.ts                # Forge config export
+├── tsconfig.json                  # Root TypeScript config
+├── package.json                   # Dependencies & scripts
+└── mock-serial-input.txt          # Mock data for local dev
 ```
 
 ## ✨ Features
 
+- **Multi-App Architecture**: Launch multiple applications from a single selector
+- **Auto-Launch**: Single apps automatically start without selector
 - **Type-Safe**: Complete TypeScript coverage with strict mode
-- **Modular**: Clean separation of concerns
+- **Environment Configs**: Switch between local (mock) and target (device) environments
 - **IPC Communication**: Type-safe inter-process communication
-- **Serial Port**: Worker-based serial communication
+- **Serial Port**: Worker-based serial communication with mock support
 - **System Monitoring**: CPU, RAM, temperature monitoring
+- **On-Screen Keyboard**: Virtual keyboard for touch interfaces
 - **Settings Management**: Persistent electron-store configuration
 - **Modern UI**: TailwindCSS + DaisyUI
 
 ## 🏗️ Architecture
 
+### Multi-App System
+The application uses a **modular multi-app architecture**:
+
+1. **App Selector**: Displays available apps on startup (if multiple apps exist)
+2. **Individual Apps**: Each app is self-contained in the [apps/](apps/) directory
+3. **Shared Tools**: Common utilities and services in [tools/](tools/) directory
+4. **Environment Configs**: JSON configs for local/target environments in [configs/](configs/)
+
 ### Main Process (Node.js)
-- **Entry Point**: `main.ts` orchestrates initialization
-- **IPC Handlers**: Handle renderer requests
+- **Entry Point**: [tools/main.ts](tools/main.ts) orchestrates initialization
+- **App Lifecycle**: [app_selector/lifecycle.ts](app_selector/lifecycle.ts) manages app launching
+- **IPC Handlers**: Handle renderer requests (in [tools/ipc/](tools/ipc/))
 - **Window Manager**: Creates and configures windows
 - **Worker Manager**: Manages serial worker process
-- **Settings Store**: Persists application settings
+- **Config Loader**: Loads environment-specific configurations
 
 ### Renderer Process (Chromium)
-- **UI Logic**: React-like component structure
+- **App Selector UI**: Main selection interface
+- **Individual App UIs**: Each app has its own HTML/TypeScript
 - **API Calls**: Type-safe IPC invocations
 - **Serial Communication**: Real-time data handling
+- **Shared Keyboard**: On-screen keyboard utility
 
 ### Worker Process (Node.js)
-- **Serial Port**: Direct hardware communication
+- **Serial Port**: Direct hardware communication (or mock data)
 - **Isolated**: Runs in separate process for stability
+- **Environment-Aware**: Uses real or mock serial based on `APP_ENV`
 
 ## 📡 API Reference
 

@@ -1,6 +1,6 @@
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 import Store from "electron-store";
-import { AppSettings, DEFAULT_SETTINGS } from "../types";
+import { AppSettings, DEFAULT_SETTINGS } from "../../types";
 
 // Initialize the settings store
 export const settingsStore = new Store<AppSettings>({

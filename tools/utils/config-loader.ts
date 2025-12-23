@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
-import { AppConfig } from "../types/config";
+import { AppConfig } from "../../types/config";
 
 /**
  * Loads the application configuration based on the environment

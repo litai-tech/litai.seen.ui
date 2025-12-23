@@ -1,4 +1,4 @@
-import { SerialDataHandler, SerialErrorHandler } from "../types";
+import { SerialDataHandler, SerialErrorHandler } from "../../types";
 
 const handleSerialError: SerialErrorHandler = (error: string): void => {
   console.error("Renderer received serial error:", error);

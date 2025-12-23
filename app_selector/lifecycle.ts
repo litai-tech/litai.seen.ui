@@ -1,8 +1,8 @@
 import { app, BrowserWindow } from "electron";
-import { serialWorkerManager } from "../workers/serial-worker-manager";
-import { mockSerialWorkerManager } from "../workers/mock-serial-worker-manager";
-import { createMainWindow } from "../windows/window-manager";
-import { loadConfig } from "../utils/config-loader";
+import { serialWorkerManager } from "../tools/workers/serial-worker-manager";
+import { mockSerialWorkerManager } from "../tools/workers/mock-serial-worker-manager";
+import { createMainWindow } from "../tools/windows/window-manager";
+import { loadConfig } from "../tools/utils/config-loader";
 
 /**
  * Registers application lifecycle event handlers

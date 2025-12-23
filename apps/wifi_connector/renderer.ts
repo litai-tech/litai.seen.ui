@@ -1,5 +1,5 @@
-import "../../src/index.css";
-import { initKeyboard } from "../../src/utils/keyboard";
+import "../../tools/index.css";
+import { initKeyboard } from "../../tools/utils/keyboard";
 
 console.log("WiFi Connector app loaded");
 

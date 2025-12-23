@@ -1,7 +1,7 @@
 import { app } from "electron";
 import started from "electron-squirrel-startup";
 import { registerAllIpcHandlers } from "./ipc";
-import { registerLifecycleHandlers } from "./app/lifecycle";
+import { registerLifecycleHandlers } from "../app_selector/lifecycle";
 
 /**
  * Main entry point for the Electron application
