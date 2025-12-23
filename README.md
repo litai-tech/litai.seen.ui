@@ -35,6 +35,14 @@ This will:
 - Display the app selector if multiple apps exist, or auto-launch a single app
 - Enable development tools for debugging
 
+### How It Works
+
+1. **On Startup**: The app scans the [apps/](apps/) directory
+2. **Single App**: If only one app exists, it launches automatically
+3. **Multiple Apps**: The app selector displays all available apps as clickable cards
+4. **App Launch**: Clicking an app loads its HTML and TypeScript
+5. **Return Home**: Apps can return to selector via `window.appAPI.goToAppSelector()`
+
 ## 📁 Project Structure
 
 ```
@@ -107,6 +115,21 @@ litai.seen.ui/
 - **Settings Management**: Persistent electron-store configuration
 - **Modern UI**: TailwindCSS + DaisyUI
 
+## 📱 Current Apps
+
+The project includes two example applications:
+
+### WiFi Connector
+Located in [apps/wifi_connector/](apps/wifi_connector/)
+- Configure WiFi network credentials
+- On-screen keyboard for SSID and password input
+- Touch-friendly interface
+
+### Servo Rotator
+Located in [apps/servo_rotator/](apps/servo_rotator/)
+- Control servo motor rotation
+- Serial communication for motor commands
+
 ## 🏗️ Architecture
 
 ### Multi-App System
@@ -173,72 +196,68 @@ window.configAPI.get<T>(key: string) → Promise<T>
 window.configAPI.getAll() → Promise<Config>
 ```
 
-## 🎯 Key Improvements
+## 🎯 Key Features of Multi-App Architecture
 
-### Before Refactoring
-- ❌ Monolithic `main.ts` (153 lines)
-- ❌ No type definitions
-- ❌ Implicit `any` types
-- ❌ Mixed concerns
-- ❌ Hard to test
-- ❌ Poor discoverability
+### Scalability
+- ✅ **Add apps instantly**: Drop HTML + TypeScript in [apps/](apps/) directory
+- ✅ **No configuration needed**: Apps auto-discovered and displayed
+- ✅ **Auto-launch**: Single apps start immediately without selector
+- ✅ **Isolated code**: Each app is self-contained
 
-### After Refactoring
-- ✅ Modular architecture (19-line entry point)
-- ✅ Complete type coverage
-- ✅ Strict TypeScript
-- ✅ Clear separation of concerns
-- ✅ Testable modules
-- ✅ Self-documenting code
+### Development Workflow
+- ✅ **Environment switching**: Test with mock data (`start:local`) or real device (`start`)
+- ✅ **Shared utilities**: Common tools in [tools/](tools/) folder
+- ✅ **Type-safe APIs**: All IPC calls are strongly typed
+- ✅ **Hot reload**: Vite-powered development server
 
-## 📊 Code Metrics
-
-| Metric | Before | After |
-|--------|--------|-------|
-| main.ts | 153 lines | 19 lines |
-| Type coverage | 0% | 100% |
-| Modules | 1 | 8+ |
-| Type definitions | 0 | 6 files |
-| Documentation | Minimal | Comprehensive |
+### Architecture Benefits
+- ✅ **Modular**: Clean separation between apps, shared tools, and configs
+- ✅ **Type-safe**: Complete TypeScript coverage with strict mode
+- ✅ **Testable**: Mock serial data for development without hardware
+- ✅ **Maintainable**: Self-documenting code with clear structure
 
 ## 🔧 Configuration
 
-### Application Settings
-Stored in `electron-store` with type-safe defaults:
+### Environment Configurations
+Located in [configs/](configs/) directory:
 
-```typescript
+**[configs/local.json](configs/local.json)** - Local development settings:
+```json
 {
-  serialBaudRate: 115200,
-  serialPortPath: "/dev/ttyS3"
+  "serialBaudRate": 115200,
+  "serialPortPath": "/dev/ttyS3",
+  "useMockSerial": true
 }
 ```
 
-### Window Configuration
-Located in `src/windows/window-manager.ts`:
-
-```typescript
-const WINDOW_CONFIG = {
-  width: 1920,
-  height: 1080,
-  autoHideMenuBar: true,
+**[configs/target.json](configs/target.json)** - Target device settings:
+```json
+{
+  "serialBaudRate": 115200,
+  "serialPortPath": "/dev/ttyS3",
+  "useMockSerial": false
 }
 ```
 
-### TypeScript Configuration
-`tsconfig.json` configured with:
-- Strict mode enabled
-- Bundler module resolution
-- ESNext target
-- Path aliases (`@/*`)
+### Application Settings
+Stored in `electron-store` with type-safe defaults (persistent across sessions)
+
+### Electron Configuration
+- **Forge Config**: [electron_configs/forge.config.ts](electron_configs/forge.config.ts)
+- **TypeScript Config**: [electron_configs/tsconfig.json](electron_configs/tsconfig.json)
+- **Vite Configs**: [electron_configs/vite.*.config.mts](electron_configs/)
+
+Configured with:
+- Strict TypeScript mode
+- Hot module reload (Vite)
+- Multi-entry point support for apps
 
 ## 📚 Documentation
 
+- **[apps/README.md](apps/README.md)** - How to create new apps
+- **[APP_SELECTOR_IMPLEMENTATION.md](APP_SELECTOR_IMPLEMENTATION.md)** - App selector architecture
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Complete system architecture
-- **[MAIN_REFACTORING.md](MAIN_REFACTORING.md)** - Main process refactoring details
-- **[REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md)** - TypeScript refactoring overview
 - **[TYPE_ARCHITECTURE.md](TYPE_ARCHITECTURE.md)** - Type system architecture
-- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick reference guide
-- **[src/types/README.md](src/types/README.md)** - Type definitions guide
 
 ## 🛠️ Development
 
@@ -354,18 +373,20 @@ Andrew Snigur
 ## 🎓 Learning Resources
 
 This project demonstrates:
-- Modern Electron architecture
-- TypeScript best practices
-- IPC communication patterns
-- Worker process management
-- Modular code organization
-- Type-safe development
+- **Multi-app Electron architecture** with app selector
+- **Environment-based configuration** for local/target deployment
+- **TypeScript best practices** with strict mode
+- **IPC communication patterns** with type safety
+- **Worker process management** for serial communication
+- **Modular code organization** with shared tools
+- **Mock data support** for hardware-independent development
 
 Perfect for learning how to build:
-- Type-safe Electron apps
-- Modular main process
-- Worker-based architecture
-- Serial port communication
+- Multi-app Electron applications
+- Type-safe Electron apps with environment configs
+- Modular main process architecture
+- Worker-based serial communication
+- Touch-friendly interfaces with on-screen keyboard
 - System monitoring apps
 
 ---
