@@ -139,6 +139,15 @@ The application uses a **modular multi-app architecture**:
 
 ## 📡 API Reference
 
+All apps have access to these APIs via the preload script:
+
+### App API
+```typescript
+window.appAPI.launchApp(appName: string, withDevTools?: boolean) → Promise<void>
+window.appAPI.goToAppSelector() → Promise<void>
+window.appAPI.getLocalIp() → Promise<string>
+```
+
 ### System API
 ```typescript
 window.systemAPI.getSystemStats() → SystemStats | SystemStatsError
@@ -156,6 +165,12 @@ window.settingsAPI.reset() → Promise<void>
 window.serialAPI.sendData(data: string) → Promise<void>
 window.serialAPI.onSerialData(callback: (data: string) => void)
 window.serialAPI.onSerialError(callback: (error: string) => void)
+```
+
+### Config API
+```typescript
+window.configAPI.get<T>(key: string) → Promise<T>
+window.configAPI.getAll() → Promise<Config>
 ```
 
 ## 🎯 Key Improvements
@@ -227,23 +242,35 @@ const WINDOW_CONFIG = {
 
 ## 🛠️ Development
 
+### Creating a New App
+
+1. Create a directory in [apps/](apps/) with your app name
+2. Add `index.html` with your UI
+3. Add `renderer.ts` with your logic (import `../../tools/index.css` first!)
+4. The app will automatically appear in the app selector
+
+See [apps/README.md](apps/README.md) for detailed instructions.
+
 ### Adding New Features
 
 1. **New IPC Handler**
-   - Create handler in `src/ipc/`
-   - Register in `src/ipc/index.ts`
-   - Add to preload script
+   - Create handler in `tools/ipc/`
+   - Register in IPC index
+   - Add to [tools/preload.ts](tools/preload.ts)
    - Use in renderer
 
 2. **New Setting**
-   - Update `AppSettings` type
+   - Update `AppSettings` type in [types/settings.ts](types/settings.ts)
    - Add to `DEFAULT_SETTINGS`
    - Access via `settingsStore`
 
 3. **New Type**
-   - Create in `src/types/`
-   - Export from `src/types/index.ts`
-   - Import and use
+   - Create in [types/](types/)
+   - Export and import as needed
+
+4. **Environment-Specific Config**
+   - Add values to [configs/local.json](configs/local.json) and [configs/target.json](configs/target.json)
+   - Access via `window.configAPI.get(key)`
 
 ### Testing
 
@@ -251,11 +278,14 @@ const WINDOW_CONFIG = {
 # Type check
 npx tsc --noEmit
 
+# Run locally with mock serial
+npm run start:local
+
+# Run with real device serial
+npm start
+
 # Build test
 npm run package
-
-# Run application
-npm start
 ```
 
 ## 🔒 Security
@@ -280,19 +310,36 @@ npm start
 ## 📝 Scripts
 
 ```bash
-npm start              # Development mode with hot reload
+npm start              # Start with target environment (device serial)
+npm run start:local    # Start with local environment (mock serial)
 npm run package        # Build packaged application
-npm run make          # Create distributable
-npm run lint          # Run ESLint
+npm run make           # Create distributable
+npm run lint           # Run ESLint
 ```
+
+## 🌍 Environments
+
+The app supports two environments controlled by the `APP_ENV` variable:
+
+### Local Environment (`APP_ENV=local`)
+- Uses mock serial data from [mock-serial-input.txt](mock-serial-input.txt)
+- Loads configuration from [configs/local.json](configs/local.json)
+- Perfect for development without hardware
+
+### Target Environment (`APP_ENV=target`)
+- Connects to real serial device
+- Loads configuration from [configs/target.json](configs/target.json)
+- Used for production/device deployment
 
 ## 🤝 Contributing
 
 1. Follow existing code structure
 2. Add TypeScript types for everything
-3. Document new features
-4. Test before committing
-5. Update relevant documentation
+3. Create new apps in the [apps/](apps/) directory
+4. Keep shared code in [tools/](tools/)
+5. Document new features
+6. Test with both `npm start:local` and `npm start`
+7. Update relevant documentation
 
 ## 📄 License
 
