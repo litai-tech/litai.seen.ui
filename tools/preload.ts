@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
-import { SystemAPI, SettingsAPI, SerialAPI, AppAPI, ConfigAPI } from "../types";
+import { SystemAPI, SettingsAPI, SerialAPI, AppAPI, ConfigAPI, WiFiAPI } from "../types";
 
 console.log("[Preload] Preload script is executing");
 
@@ -45,10 +45,18 @@ const configAPI: ConfigAPI = {
   getConfig: () => ipcRenderer.invoke("config:getConfig"),
 };
 
+const wifiAPI: WiFiAPI = {
+  listAvailableNetworks: () => ipcRenderer.invoke("wifi:listAvailableNetworks"),
+  connect: (connection) => ipcRenderer.invoke("wifi:connect", connection),
+  disconnect: () => ipcRenderer.invoke("wifi:disconnect"),
+  getCurrentConnection: () => ipcRenderer.invoke("wifi:getCurrentConnection"),
+};
+
 console.log("[Preload] Exposing APIs to main world");
 contextBridge.exposeInMainWorld("systemAPI", systemAPI);
 contextBridge.exposeInMainWorld("settingsAPI", settingsAPI);
 contextBridge.exposeInMainWorld("serialAPI", serialAPI);
 contextBridge.exposeInMainWorld("appAPI", appAPI);
 contextBridge.exposeInMainWorld("configAPI", configAPI);
+contextBridge.exposeInMainWorld("wifiAPI", wifiAPI);
 console.log("[Preload] APIs exposed successfully");

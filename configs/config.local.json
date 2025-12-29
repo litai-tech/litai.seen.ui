@@ -8,5 +8,8 @@
     "portPath": "",
     "baudRate": 9600
   },
+  "wifi": {
+    "enabled": false
+  },
   "useOnScreenKeyboard": true
 }

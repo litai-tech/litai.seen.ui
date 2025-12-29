@@ -11,8 +11,13 @@ export interface SerialConfig {
   baudRate: number;
 }
 
+export interface WiFiConfig {
+  enabled: boolean;
+}
+
 export interface AppConfig {
   environment: "local" | "target";
   serial: SerialConfig;
+  wifi: WiFiConfig;
   useOnScreenKeyboard: boolean;
 }

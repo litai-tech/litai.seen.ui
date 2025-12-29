@@ -8,5 +8,8 @@
     "portPath": "/dev/ttyS3",
     "baudRate": 500000
   },
+  "wifi": {
+    "enabled": true
+  },
   "useOnScreenKeyboard": true
 }

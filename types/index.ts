@@ -11,6 +11,10 @@ export type {
   AppAPI,
   AppInfo,
   ConfigAPI,
+  WiFiAPI,
+  WiFiNetwork,
+  WiFiConnection,
+  WiFiStatus,
 } from "./api";
 
 export type { AppSettings, SettingsKey } from "./settings";
@@ -20,4 +24,4 @@ export type { WorkerInputMessage, WorkerOutputMessage } from "./worker";
 
 export type { SerialDataHandler, SerialErrorHandler } from "./serial";
 
-export type { AppConfig, SerialConfig } from "./config";
+export type { AppConfig, SerialConfig, WiFiConfig } from "./config";

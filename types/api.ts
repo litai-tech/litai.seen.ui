@@ -64,3 +64,40 @@ export interface AppAPI {
 export interface ConfigAPI {
   getConfig: () => Promise<any>;
 }
+
+/**
+ * WiFi network information
+ */
+export interface WiFiNetwork {
+  ssid: string;
+  signal: number; // 0-100
+  security: string; // e.g., "WPA2", "WPA3", "Open", "WEP"
+}
+
+/**
+ * WiFi connection parameters
+ */
+export interface WiFiConnection {
+  ssid: string;
+  password: string;
+  autoconnect?: boolean;
+}
+
+/**
+ * WiFi connection status
+ */
+export interface WiFiStatus {
+  connected: boolean;
+  ssid?: string;
+  signal?: number;
+}
+
+/**
+ * WiFi API exposed to renderer process
+ */
+export interface WiFiAPI {
+  listAvailableNetworks: () => Promise<WiFiNetwork[]>;
+  connect: (connection: WiFiConnection) => Promise<void>;
+  disconnect: () => Promise<void>;
+  getCurrentConnection: () => Promise<WiFiStatus>;
+}

@@ -12,18 +12,31 @@
           <h2 class="card-title">WiFi Connection Manager</h2>
           <p>This is a placeholder for the WiFi connector app.</p>
 
-          <div class="keyboard-input-example mt-6">
-            <h3 class="text-xl font-semibold mb-3">Example: WiFi Setup with Onscreen Keyboard</h3>
+          <div class="mt-6">
+            <!-- Current Connection Status -->
+            <div id="status-section" class="mb-6">
+              <h3 class="text-xl font-semibold mb-3">Connection Status</h3>
+              <div id="connection-status" class="alert">
+                <span>Loading...</span>
+              </div>
+            </div>
+
+            <!-- WiFi Connection Form -->
+            <h3 class="text-xl font-semibold mb-3">Connect to Network</h3>
+
             <div class="form-control mb-4">
               <label class="label">
-                <span class="label-text">Network Name (SSID)</span>
+                <span class="label-text">Available Networks</span>
               </label>
-              <input
-                type="text"
-                id="ssid-input"
-                placeholder="Enter network name"
-                class="input input-bordered w-full"
-              />
+              <select
+                id="network-select"
+                class="select select-bordered w-full"
+              >
+                <option disabled selected>Scanning for networks...</option>
+              </select>
+              <button id="refresh-networks-btn" class="btn btn-sm btn-outline mt-2">
+                Refresh Networks
+              </button>
             </div>
 
             <div class="form-control mb-4">
@@ -38,8 +51,20 @@
               />
             </div>
 
-            <button class="btn btn-primary">Connect to WiFi</button>
-            <button class="btn btn-accent" onclick="window.appAPI.goToAppSelector()">Back to App Selector</button>
+            <div class="form-control mb-4">
+              <label class="label cursor-pointer">
+                <span class="label-text">Auto-connect on startup</span>
+                <input type="checkbox" id="autoconnect-checkbox" class="checkbox" />
+              </label>
+            </div>
+
+            <div class="flex gap-2 mb-4">
+              <button id="connect-btn" class="btn btn-primary">Connect to WiFi</button>
+              <button id="disconnect-btn" class="btn btn-error">Disconnect</button>
+              <button class="btn btn-accent" onclick="window.appAPI.goToAppSelector()">Back to App Selector</button>
+            </div>
+
+            <div id="message-section" class="mt-4"></div>
           </div>
         </div>
       </div>
