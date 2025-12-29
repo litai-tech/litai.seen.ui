@@ -48,6 +48,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^11.0.2",
+    "litai-spex": "^1.0.1",
     "serialport": "^13.0.0",
     "simple-keyboard": "^3.8.93",
     "systeminformation": "^5.27.11"
